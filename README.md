@@ -8,11 +8,11 @@ Overview | Scala CLI : https://scala-cli.virtuslab.org/docs/overview
 
 ```bash
 # setup ide
-scala-cli setup-ide . --scala 2.13
+scala-cli setup-ide Hoge.scala
 
 # format
 scala-cli fmt
 
 # run
-scala-cli hoge.scala
+scala-cli Hoge.scala
 ```
