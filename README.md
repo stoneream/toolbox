@@ -16,3 +16,6 @@ scala-cli fmt
 # run
 scala-cli Hoge.scala
 ```
+
+//> using dep org.mariadb.jdbc::mariadb-java-client:3.1.4
+
