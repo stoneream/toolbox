@@ -33,7 +33,7 @@ main() {
   done
 
   if [ -z "$1" ]; then
-    echo "Usage: $0 [-r|--recursive] <target_directory> [output_file_name]"
+    echo "Usage: [-r|--recursive] <target_directory> [output_file_name]"
     return 1
   fi
 
