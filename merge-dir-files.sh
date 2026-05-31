@@ -1,7 +1,34 @@
 #!/bin/bash
 
+RECURSIVE=false
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -r|--recursive)
+      RECURSIVE=true
+      shift
+      ;;
+    -h|--help)
+      echo "Usage: $0 [-r|--recursive] <target_directory> [output_file_name]"
+      exit 0
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      echo "Unknown option: $1"
+      echo "Usage: $0 [-r|--recursive] <target_directory> [output_file_name]"
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
 if [ -z "$1" ]; then
-  echo "Usage: $0 <target_directory> [output_file_name]"
+  echo "Usage: $0 [-r|--recursive] <target_directory> [output_file_name]"
   exit 1
 fi
 
@@ -13,12 +40,25 @@ if [ ! -d "$TARGET_DIR" ]; then
   exit 1
 fi
 
-if [ -z "$OUTPUT_FILE" ]; then
+if [ -z "$OUTPUT_FILE_NAME" ]; then
   OUTPUT_FILE_NAME="merge_result.txt"
 fi
 
-find "$TARGET_DIR" -type f | while IFS= read -r FILE
+OUTPUT_FILE_PATH=$(realpath "$OUTPUT_FILE_NAME")
+: > "$OUTPUT_FILE_NAME"
+
+if [ "$RECURSIVE" = true ]; then
+  FIND_ARGS=("$TARGET_DIR" -type f)
+else
+  FIND_ARGS=("$TARGET_DIR" -maxdepth 1 -type f)
+fi
+
+find "${FIND_ARGS[@]}" | while IFS= read -r FILE
 do
+  if [ "$(realpath "$FILE")" = "$OUTPUT_FILE_PATH" ]; then
+    continue
+  fi
+
   echo "--- $FILE ---" >> "$OUTPUT_FILE_NAME"
 
   if file "$FILE" | grep -q text; then
