@@ -6,9 +6,11 @@
 # notify = ["bash", "/home/user/ghq/github.com/stoneream/toolbox/codex-play-notify.sh"]
 #
 # 環境変数の `CODEX_NOTIFY_SOUND` で通知音声のファイルパスを指定することもできる。
-# 指定がない場合は、`~/.codex/notify.wav` の再生を試みる。
+# 指定したファイルが存在しない場合は、toolbox の `notify.wav` の再生を試みる。
 
 CODEX_DIR="$HOME/.codex"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+FALLBACK_SOUND_FILE="$SCRIPT_DIR/notify.wav"
 
 if [[ ! -d "$CODEX_DIR" ]]; then
   echo "codex directory not found: $CODEX_DIR" >&2
@@ -18,6 +20,10 @@ fi
 cd -- "$CODEX_DIR" || exit 1
 
 SOUND_FILE="${CODEX_NOTIFY_SOUND:-$CODEX_DIR/notify.wav}"
+
+if [[ ! -f "$SOUND_FILE" ]]; then
+  SOUND_FILE="$FALLBACK_SOUND_FILE"
+fi
 
 if [[ ! -f "$SOUND_FILE" ]]; then
   echo "notify sound file not found: $SOUND_FILE" >&2
