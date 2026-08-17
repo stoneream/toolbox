@@ -87,17 +87,6 @@ pnpm dev redmine issues import dumps/<dump-file>.json \
 
 [Redmine REST API](https://www.redmine.org/projects/redmine/wiki/REST_Api)
 
-### ビルドして実行する
-
-TypeScriptをビルドしてから実行する場合は、次のコマンドを使用します。
-
-```sh
-pnpm build
-pnpm start notion data-sources list
-```
-
-ダンプコマンドや各オプションも、`pnpm dev` の場合と同様に指定できます。
-
 ## ダンプファイル
 
 ファイル名にはデータソースIDとUTCの出力日時が含まれます。
